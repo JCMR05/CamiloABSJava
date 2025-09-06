@@ -12,21 +12,34 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <form action="" method="POST" id="formRegistroUsuario">
+                            @csrf
+                            <form action="{{ route('usuario.store') }}" method="POST" id="formRegistroUsuario">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="nombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                        <label for="name" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control @error('name') is-invalid
+                                        @enderror" id="name" name="name" required>
+                                        @error('name')
+                                            <small class=" text-danger ">{{ $messages }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="email" name="email" required>
+                                        <input type="text" class="form-control @error('email') is-invalid
+                                        @enderror" id="email" name="email" required>
+                                        @error('email')
+                                            <small class=" text-danger ">{{ $messages }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="text" class="form-control" id="password" name="password" required>
+                                        <input type="text" class="form-control @error('password') is-invalid
+                                        @enderror" id="password" name="password" required>
+                                        @error('password')
+                                            <small class=" text-danger ">{{ $messages }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="estado" class="form-label">Estado</label>
