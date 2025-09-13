@@ -23,11 +23,17 @@
                                 </div>
                             </form>
                         </div>
+                        @if (Session::has('mensaje'))
+                            <div class="alert alert-info alert-dismissible fade show mt-2">
+                                {{ Session::get('mensaje') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
                         <div class="table-responsive mt-3">
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="width: 100px">Opciones</th>
+                                    <th style="width: 130px">Opciones</th>
                                     <th style="width: 20px">ID</th>
                                     <th>Nombre</th>
                                     <th>Email</th>
@@ -45,17 +51,23 @@
                                     
                                     <tr class="align-middle">
                                         <td>
-                                            <a href="#" class="btn btn-warning btn-sm"> <i class="bi bi-pencil-fill"></i> </a>&nbsp;
-                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar-01">
+                                            <a href="{{ route('usuario.edit', $registro->id)}}" class="btn btn-info btn-sm"> <i class="bi bi-pencil-fill"></i> </a>&nbsp;
+                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-eliminar-{{$registro -> id}}">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
+                                            <button class="btn {{ $registro -> activo ? 'btn-success' : 'btn-warning'}} btn-sm" data-bs-toggle="modal" data-bs-target="#modal-toggle-{{$registro -> id}}">
+                                                <i class="fa-solid {{ $registro -> activo ? 'fa-thumbs-up' : 'fa-thumbs-down'}} "></i>
+                                            </button>
                                         </td>
+                                  
+
                                         <td>{{$registro->id }}</td>
                                         <td>{{$registro->name}}</td>
                                         <td>{{$registro->email}}</td>
                                         <td>{{$registro->activo}}</td>
                                     </tr>
                                     @include('usuario.delete')
+                                    @include('usuario.activate')
                                     
                                     @endforeach
                                     @endif

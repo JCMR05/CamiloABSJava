@@ -13,22 +13,26 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             @csrf
-                            <form action="{{ route('usuario.store') }}" method="POST" id="formRegistroUsuario">
+                            <form action="{{ isset($registro) ? route('usuario.update', $registro -> id) : route('usuario.store') }}" method="POST" id="formRegistroUsuario">
+                                @csrf
+                                @if (isset($registro))
+                                    @method('PUT')
+                                @endif
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="name" class="form-label">Nombre</label>
                                         <input type="text" class="form-control @error('name') is-invalid
-                                        @enderror" id="name" name="name" required>
+                                        @enderror" id="name" name="name" value="{{ OLD('name',$registro -> name ?? '') }}" required>
                                         @error('name')
-                                            <small class=" text-danger ">{{ $messages }}</small>
+                                            <small class=" text-danger ">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="text" class="form-control @error('email') is-invalid
-                                        @enderror" id="email" name="email" required>
+                                        @enderror" id="email" name="email" value="{{ OLD('email',$registro -> email ?? '') }}" required>
                                         @error('email')
-                                            <small class=" text-danger ">{{ $messages }}</small>
+                                            <small class=" text-danger ">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -38,14 +42,14 @@
                                         <input type="text" class="form-control @error('password') is-invalid
                                         @enderror" id="password" name="password" required>
                                         @error('password')
-                                            <small class=" text-danger ">{{ $messages }}</small>
+                                            <small class=" text-danger ">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="estado" class="form-label">Estado</label>
-                                        <select class="form-select" name="activo" id="activo">
-                                            <option value="1">Activo</option>
-                                            <option value="0">Inactivo</option>
+                                        <select class="form-select" name="activo" id="activo" >
+                                            <option value="1" {{old('activo',$registro-> activo ?? '1') == '1' ? 'selected' : ''}}>Activo</option>
+                                            <option value="0" {{old('activo',$registro-> activo ?? '1') == '0' ? 'selected' : ''}}>Inactivo</option>
                                         </select>
                                     </div>
                                 </div>

@@ -17,7 +17,7 @@ class UserController extends Controller
         $registros = User::where('name', 'like', "%{$texto}%")
         ->orWhere('email', 'like',"%{$texto}%")
         ->orderBy('id','desc')
-        ->paginate(1);
+        ->paginate(10);
         return view('usuario.index', compact('registros', 'texto'));
     }
 
@@ -40,7 +40,7 @@ class UserController extends Controller
         $registro->password=bcrypt($request->input('password'));
         $registro->activo=$request->input('activo');
         $registro->save();
-        return redirect()->route('usuarios.index')->with('mensaje','Registro '.$registro->name.' creado satisfactoriamente');
+        return redirect()->route('usuario.index')->with('mensaje','Registro '.$registro->name.' creado satisfactoriamente');
     }
 
     /**
@@ -54,24 +54,39 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $registro=User::findOrFail($id);
+        return view('usuario.action', compact('registro'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $registro=User::findOrFail($id);
+        $registro->name=$request->input('name');
+        $registro->email=$request->input('email');
+        $registro->password=bcrypt($request->input('password'));
+        $registro->activo=$request->input('activo');
+        $registro->save();
+        return redirect()->route('usuario.index')->with('mensaje','Registro '.$registro->name.' actualizado satisfactoriamente');   
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $registro=User::findOrFail($id);
+        $registro->delete();
+        return redirect()->route('usuario.index')->with('mensaje','Registro '.$registro->name.' borrado satisfactoriamente'); 
+    }
+
+    public function toggleStatus(User $usuario){
+        $usuario -> activo =! $usuario -> activo;
+        $usuario -> save();
+        return redirect()->route('usuario.index')->with('mensaje',' Estado del usuario actualizado satisfactoriamente'); 
     }
 }
